@@ -40,6 +40,7 @@ def inject_ga():
             st.error(f"Error occurred while writing HTML: {e}")
             # 복사된 파일을 다시 원래대로 되돌리기
             shutil.copy(bck_index, index_path)
+inject_ga()
 
 
 def get_stats_valuation(ticker, headers = {'User-agent': 'Mozilla/5.0'}):
