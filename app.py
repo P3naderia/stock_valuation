@@ -5,39 +5,6 @@ from bs4 import BeautifulSoup
 import pathlib
 import shutil
 
-GA_ID = "google_analytics"
-GA_SCRIPT = """
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-LP0EX3CCDH"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-LP0EX3CCDH');
-</script>
-"""
-
-def inject_ga(): 
-    index_path = pathlib.Path(st.__file__).parent / "static" / "index.html"
-    soup = BeautifulSoup(index_path.read_text(), features="html.parser")
-    if not soup.find(id=GA_ID): 
-        bck_index = index_path.with_suffix('.bck')
-        try:
-            if bck_index.exists():
-                shutil.copy(bck_index, index_path)  
-            else:
-                shutil.copy(index_path, bck_index)  
-        except Exception as e:
-            st.error(f"Error occurred while copying file: {e}")
-            return
-        html = str(soup)
-        new_html = html.replace('<head>', '<head>\n' + GA_SCRIPT)
-        try:
-            index_path.write_text(new_html)
-        except Exception as e:
-            st.error(f"Error occurred while writing HTML: {e}")
-            shutil.copy(bck_index, index_path)
 
 def get_stats_valuation(ticker, headers={'User-agent': 'Mozilla/5.0'}):
     '''Scrapes Valuation Measures table from the statistics tab on Yahoo Finance 
@@ -74,6 +41,40 @@ def main():
                 st.warning(f"No valuation measures found for ticker {ticker}.")
         else:
             st.warning('Please enter a valid ticker symbol.')
+
+GA_ID = "google_analytics"
+GA_SCRIPT = """
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LP0EX3CCDH"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-LP0EX3CCDH');
+</script>
+"""
+
+def inject_ga(): 
+    index_path = pathlib.Path(st.__file__).parent / "static" / "index.html"
+    soup = BeautifulSoup(index_path.read_text(), features="html.parser")
+    if not soup.find(id=GA_ID): 
+        bck_index = index_path.with_suffix('.bck')
+        try:
+            if bck_index.exists():
+                shutil.copy(bck_index, index_path)  
+            else:
+                shutil.copy(index_path, bck_index)  
+        except Exception as e:
+            st.error(f"Error occurred while copying file: {e}")
+            return
+        html = str(soup)
+        new_html = html.replace('<head>', '<head>\n' + GA_SCRIPT)
+        try:
+            index_path.write_text(new_html)
+        except Exception as e:
+            st.error(f"Error occurred while writing HTML: {e}")
+            shutil.copy(bck_index, index_path)
 
 if __name__ == "__main__":
     main()
