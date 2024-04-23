@@ -36,6 +36,7 @@ def inject_ga():
 
 inject_ga()
 
+
 def get_stats_valuation(ticker, headers = {'User-agent': 'Mozilla/5.0'}):
     '''Scrapes Valuation Measures table from the statistics tab on Yahoo Finance 
        for an input ticker 
