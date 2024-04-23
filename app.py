@@ -33,7 +33,6 @@ def inject_ga():
         new_html = html.replace('<head>', '<head>\n' + GA_SCRIPT)
         index_path.write_text(new_html)
 
-inject_ga()
 
 def get_stats_valuation(ticker, headers = {'User-agent': 'Mozilla/5.0'}):
     '''Scrapes Valuation Measures table from the statistics tab on Yahoo Finance 
