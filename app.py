@@ -1,4 +1,3 @@
-# 라이브러리 생성
 import streamlit as st
 import pandas as pd
 import requests
